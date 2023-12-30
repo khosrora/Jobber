@@ -67,3 +67,11 @@ services:
     ports:
       - 9200:9200
       - 9300:9300
+    volumes:
+      - ./docker-volumes/elasticsearch-data:/usr/share/elasticsearch/data
+    networks:
+      - elastic
+
+networks:
+  elastic:
+    name: elastic 
