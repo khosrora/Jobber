@@ -1,3 +1,4 @@
+# docker compose up -d redis mongodb mysql postgres rabbitmq elasticsearch kibana
 version: '3.9'
 services: 
   redis:
@@ -42,7 +43,7 @@ services:
     ports:
       - '5432:5432'
     volumes:
-      - ./docker-volumes/postgres:var/lib/postgresql
+      - ./docker-volumes/postgres:/var/lib/postgresql
   rabbitmq:
     container_name: rabbitmq_container
     image: rabbitmq:3.13-rc-management-alpine
@@ -71,6 +72,21 @@ services:
       - ./docker-volumes/elasticsearch-data:/usr/share/elasticsearch/data
     networks:
       - elastic
+  kibana:
+    container_name: kibana_container
+    image: docker.elastic.co/kibana/kibana:8.10.4
+    restart: always
+    environment:
+      - ELASTICSEARCH_HOSTS=["http://elasticsearch_container:9200"]
+    ports:
+      - 5601:5601
+    networks:
+      - elastic
+    volumes:
+      - ./kibana.yml/:/usr/share/kibana/config/kibana.yml:ro
+    depends_on:
+      - elasticsearch
+
 
 networks:
   elastic:
