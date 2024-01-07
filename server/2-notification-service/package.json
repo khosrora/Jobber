@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@elastic/elasticsearch": "^8.11.0",
     "@khosrora/jobber": "0.0.2",
     "@khosrora/jobber-shared": "^0.0.1",
     "@typescript-eslint/eslint-plugin": "^6.16.0",
