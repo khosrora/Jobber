@@ -1,8 +1,9 @@
 import { Channel, ConsumeMessage } from 'amqplib';
-import { winstonLogger } from '@khosrora/jobber-shared';
+import { IEmailLocals, winstonLogger } from '@khosrora/jobber-shared';
 import { config } from '@notifications/config';
 import { Logger } from 'winston';
-import { createConnection } from './connection';
+import { createConnection } from '@notifications/queues/connection';
+import { sendEmail } from '@notifications/queues/mail.transport';
 
 const log: Logger = winstonLogger(`${config.ELASTIC_SEARCH_URL}`, 'email Consumer', 'debug');
 
@@ -56,8 +57,16 @@ async function consumeOrderEmailMessages(channel: Channel): Promise<void> {
     await channel.bindQueue(jobberQueue.queue, exchangeName, routingKey);
 
     channel.consume(jobberQueue.queue, async (msg: ConsumeMessage | null) => {
-      console.log(JSON.parse(msg!.content.toString()));
-      // send emails
+      const { receiverEmail, username, verifyLink, resetLink, template } = JSON.parse(msg!.content.toString());
+      const locals: IEmailLocals = {
+        appLink: `${config.CLIENT_URL}`,
+        appIcon: 'https://i.ibb.co/YLkN36V/unnamed.png',
+        username,
+        verifyLink,
+        resetLink
+      };
+
+      await sendEmail(template, receiverEmail, locals);
       // acknowledge
       channel.ack(msg!);
     });

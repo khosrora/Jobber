@@ -3,7 +3,7 @@ import http from 'http';
 import { Application } from 'express';
 
 import { Logger } from 'winston';
-import { winstonLogger } from '@khosrora/jobber-shared';
+import { IEmailMessageDetails, winstonLogger } from '@khosrora/jobber-shared';
 
 import { config } from '@notifications/config';
 import { healthRoutes } from '@notifications/routes';
@@ -29,10 +29,16 @@ async function startQueues(): Promise<void> {
   await consumeAuthEmailMessages(emailChannel);
   await consumeOrderEmailMessages(emailChannel);
 
+  const verificationLink = `${config.CLIENT_URL}/confirm_email?v_token=2213123123fanfla`;
+  const messageDetails: IEmailMessageDetails = {
+    receiverEmail: `${config.SENDER_EMAIL}`,
+    verifyLink: verificationLink,
+    template: 'verifyEmail'
+  };
   await emailChannel.assertExchange('jobber-order-notification', 'direct');
 
   // const message = JSON.stringify({ name: 'khosro', familly: 'ra' });
-  const message1 = JSON.stringify({ name: 'jobber', service: 'order notification service' });
+  const message1 = JSON.stringify(messageDetails);
   emailChannel.publish('jobber-order-notification', 'order-email', Buffer.from(message1));
 }
 
