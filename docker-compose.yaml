@@ -49,8 +49,8 @@ services:
     image: rabbitmq:3.13-rc-management-alpine
     restart: always
     environment:
-      - RABBITMQ_DEFAULT_USER=jobber
-      - RABBITMQ_DEFAULT_PASS=jobberpass
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
     ports:
       # AMQP protocol port
       - '5672:5672'
