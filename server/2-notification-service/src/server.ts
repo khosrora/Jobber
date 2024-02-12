@@ -7,6 +7,7 @@ import { IEmailMessageDetails, winstonLogger } from '@khosrora/jobber-shared';
 
 import { config } from '@notifications/config';
 import { healthRoutes } from '@notifications/routes';
+
 import { checkConnection } from '@notifications/elasticsearch';
 import { createConnection } from '@notifications/queues/connection';
 import { Channel } from 'amqplib';
@@ -18,8 +19,8 @@ const log: Logger = winstonLogger(`${config.ELASTIC_SEARCH_URL}`, 'notification 
 export function start(app: Application): void {
   startServer(app);
 
-  // http:localhost:4001/notificaton-health
-  app.use('', healthRoutes);
+  // http:localhost:4001/notificaton
+  app.use('', healthRoutes());
   startQueues();
   startElasticSearch();
 }

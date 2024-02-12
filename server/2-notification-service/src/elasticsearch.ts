@@ -12,14 +12,14 @@ const elasticSearchClient = new Client({
 
 export async function checkConnection(): Promise<void> {
   let isConnected = false;
-  while (!isConnected) {
-    try {
-      const health: ClusterHealthResponse = await elasticSearchClient.cluster.health({});
-      log.info(`notification service elastic search health status - ${health.status}`);
-      isConnected = true;
-    } catch (error) {
-      log.error('connection to Elastic search faild .. retrying ...');
-      log.log('error', 'notification service checkConnection() : ', error);
-    }
+  try {
+    const health: ClusterHealthResponse = await elasticSearchClient.cluster.health({});
+    log.info(`notification service elastic search health status - ${health.status}`);
+    isConnected = true;
+    console.log(isConnected);
+  } catch (error) {
+    log.error('connection to Elastic search faild .. retrying ...');
+    log.log('error', 'notification service checkConnection() : ', error);
+    process.exit(-1)
   }
 }
