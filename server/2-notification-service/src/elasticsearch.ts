@@ -1,8 +1,8 @@
 import { Client } from '@elastic/elasticsearch';
 import { ClusterHealthResponse } from '@elastic/elasticsearch/lib/api/types';
-import { winstonLogger } from '@khosrora/jobber-shared';
 import { Logger } from 'winston';
 import { config } from './config';
+import { winstonLogger } from './utils/Logger';
 
 const log: Logger = winstonLogger(`${config.ELASTIC_SEARCH_URL}`, 'elastic search server', 'debug');
 
@@ -20,6 +20,6 @@ export async function checkConnection(): Promise<void> {
   } catch (error) {
     log.error('connection to Elastic search faild .. retrying ...');
     log.log('error', 'notification service checkConnection() : ', error);
-    process.exit(-1)
+    process.exit(-1);
   }
 }

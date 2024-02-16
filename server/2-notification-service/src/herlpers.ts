@@ -1,13 +1,14 @@
 import path from 'path';
-import { IEmailLocals, winstonLogger } from '@khosrora/jobber-shared';
+
 import { Logger } from 'winston';
 import { config } from './config';
 import nodemailer, { Transporter } from 'nodemailer';
 import Email from 'email-templates';
+import { winstonLogger } from './utils/Logger';
 
 const log: Logger = winstonLogger(`${config.ELASTIC_SEARCH_URL}`, 'mail transport helper', 'debug');
 
-async function emailTemplates(templates: string, reciver: string, locals: IEmailLocals): Promise<void> {
+async function emailTemplates(templates: string, reciver: string, locals: any): Promise<void> {
   try {
     const smtTransport: Transporter = nodemailer.createTransport({
       host: 'smtp.ethereal.email',

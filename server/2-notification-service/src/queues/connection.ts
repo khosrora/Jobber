@@ -1,7 +1,7 @@
 import client, { Channel, Connection } from 'amqplib';
-import { winstonLogger } from '@khosrora/jobber-shared';
 import { config } from '@notifications/config';
 import { Logger } from 'winston';
+import { winstonLogger } from '@notifications/utils/Logger';
 
 const log: Logger = winstonLogger(`${config.ELASTIC_SEARCH_URL}`, 'notification QUEUE connection', 'debug');
 

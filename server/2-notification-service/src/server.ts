@@ -3,7 +3,6 @@ import http from 'http';
 import { Application } from 'express';
 
 import { Logger } from 'winston';
-import { IEmailMessageDetails, winstonLogger } from '@khosrora/jobber-shared';
 
 import { config } from '@notifications/config';
 import { healthRoutes } from '@notifications/routes';
@@ -12,6 +11,7 @@ import { checkConnection } from '@notifications/elasticsearch';
 import { createConnection } from '@notifications/queues/connection';
 import { Channel } from 'amqplib';
 import { consumeAuthEmailMessages, consumeOrderEmailMessages } from '@notifications/queues/email.consume';
+import { winstonLogger } from './utils/Logger';
 
 const SERVER_PORT = 4001;
 const log: Logger = winstonLogger(`${config.ELASTIC_SEARCH_URL}`, 'notification Server', 'debug');
@@ -31,7 +31,7 @@ async function startQueues(): Promise<void> {
   await consumeOrderEmailMessages(emailChannel);
 
   const verificationLink = `${config.CLIENT_URL}/confirm_email?v_token=2213123123fanfla`;
-  const messageDetails: IEmailMessageDetails = {
+  const messageDetails: any = {
     receiverEmail: `${config.SENDER_EMAIL}`,
     verifyLink: verificationLink,
     template: 'verifyEmail'
