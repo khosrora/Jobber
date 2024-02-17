@@ -40,7 +40,8 @@
     "socket.io-client": "^4.7.2",
     "typescript": "^5.2.2",
     "typescript-transform-paths": "^3.4.6",
-    "winston": "^3.11.0"
+    "winston": "^3.11.0",
+    "winston-elasticsearch": "^0.17.4"
   },
   "devDependencies": {
     "@jest/types": "^29.6.3",
