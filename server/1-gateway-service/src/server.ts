@@ -9,9 +9,12 @@ import helmet from 'helmet';
 import compression from 'compression';
 import { CustomError, IErrorResponse } from './utils/error-handler';
 import http from 'http';
+import { config } from '@gateway/config';
+import { elasticsearch } from './elasticsearch';
+import { appRoutes } from '@gateway/routes';
 
 const SERVER_PORT = 4000;
-const log: Logger = winstonLogger('http://localhost:9200/', 'apiGatwayServer', 'debug');
+const log: Logger = winstonLogger(`${config.ELASTIC_SEARCH_URL}`, 'apiGatwayServer', 'debug');
 
 export class GetwayServer {
   private app: Application;
@@ -23,8 +26,8 @@ export class GetwayServer {
   public start(): void {
     this.securityMiddleware(this.app);
     this.standardMiddleware(this.app);
-    // this.routesMiddleware(this.app);
-    // this.startElasticSearch();
+    this.routesMiddleware(this.app);
+    this.startElasticSearch();
     this.errorHandler(this.app);
     this.startServer(this.app);
   }
@@ -34,9 +37,9 @@ export class GetwayServer {
     app.use(
       cookieSession({
         name: 'session',
-        keys: [],
+        keys: [`${config.SECRET_KEY_ONE}`, `${config.SECRET_KEY_TWO}`],
         maxAge: 24 * 7 * 360000,
-        secure: false //* update with value from config
+        secure: config.NODE_ENV !== 'development' //* update with value from config
         //! sameSite : none
       })
     );
@@ -44,7 +47,7 @@ export class GetwayServer {
     app.use(helmet());
     app.use(
       cors({
-        origin: '',
+        origin: config.CLIENT_URL,
         credentials: true,
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
       })
@@ -57,9 +60,13 @@ export class GetwayServer {
     app.use(urlencoded({ extended: true, limit: '200nb' }));
   }
 
-  private routesMiddleware(app: Application): void {}
+  private routesMiddleware(app: Application): void {
+    appRoutes(app);
+  }
 
-  private startElasticSearch(): void {}
+  private startElasticSearch(): void {
+    elasticsearch.checkConnection();
+  }
 
   private errorHandler(app: Application): void {
     app.use('*', (req: Request, res: Response, next: NextFunction) => {
