@@ -16,18 +16,18 @@ import { StatusCodes } from 'http-status-codes';
 export async function create(req: Request, res: Response): Promise<void> {
   const { error } = await Promise.resolve(signupSchema.validate(req.body));
   if (error?.details) {
-    throw new BadRequestError(error.details[0].message, 'signUp create() method Error');
+    throw new BadRequestError(error.details[0].message, 'signUp create() method Error 1');
   }
   const { username, email, password, country, profilePicture } = req.body;
   const checkIfUserExist: IAuthDocument = await getAuthUserByUsernameOrEmail(username, email);
   if (checkIfUserExist) {
-    throw new BadRequestError('Invalid credentials. Email or username', 'signUp create() method Error');
+    throw new BadRequestError('Invalid credentials. Email or username', 'signUp create() method Error 2');
   }
   const profilePublicId = uuidV4();
-  const uploadResult: UploadApiResponse = (await uploads(profilePicture, `${profilePublicId}`, true, true)) as UploadApiResponse;
-  if (!uploadResult.public_id) {
-    throw new BadRequestError('File Upload Error . Try again', 'signUp create() method Error');
-  }
+  // const uploadResult: UploadApiResponse = (await uploads(profilePicture, `${profilePublicId}`, true, true)) as UploadApiResponse;
+  // if (!uploadResult.public_id) {
+  //   throw new BadRequestError('File Upload Error . Try again', 'signUp create() method Error 3');
+  // }
   const randomBytes: Buffer = await Promise.resolve(crypto.randomBytes(20));
   const randomCharacters: string = randomBytes.toString('hex');
   const authData: IAuthDocument = {
@@ -36,7 +36,7 @@ export async function create(req: Request, res: Response): Promise<void> {
     profilePublicId,
     password,
     country,
-    profilePicture: uploadResult?.secure_url,
+    // profilePicture: uploadResult?.secure_url,
     emailVerificationToken: randomCharacters
   } as IAuthDocument;
   const result: IAuthDocument = await createAuthUser(authData);

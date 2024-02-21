@@ -32,7 +32,8 @@ const AuthModel: ModelDefined<IAuthDocument, AuthUserCreationAttributes> = seque
     },
     profilePicture: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: true,
+      defaultValue: ''
     },
     emailVerificationToken: {
       type: DataTypes.STRING,
@@ -82,6 +83,10 @@ AuthModel.addHook('beforeCreate', async (auth: Model) => {
 
 AuthModel.prototype.comparePassword = async function (password: string, hashedPassword: string): Promise<boolean> {
   return compare(password, hashedPassword);
+};
+
+AuthModel.prototype.hashPassword = async function (password: string): Promise<string> {
+  return hash(password, SALT_ROUND);
 };
 
 // force : true always deletes the tabale when there is server start

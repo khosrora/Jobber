@@ -7,11 +7,12 @@ import hpp from 'hpp';
 import cors from 'cors';
 import helmet from 'helmet';
 import compression from 'compression';
-import { CustomError, IErrorResponse } from './utils/error-handler';
+import { CustomError, IErrorResponse } from '@gateway/utils/error-handler';
 import http from 'http';
 import { config } from '@gateway/config';
 import { elasticsearch } from './elasticsearch';
 import { appRoutes } from '@gateway/routes';
+import { axiosAuthInstance } from '@gateway/services/api/auth.service';
 
 const SERVER_PORT = 4000;
 const log: Logger = winstonLogger(`${config.ELASTIC_SEARCH_URL}`, 'apiGatwayServer', 'debug');
@@ -52,12 +53,19 @@ export class GetwayServer {
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
       })
     );
+
+    app.use((req: Request, res: Response, next: NextFunction) => {
+      if (req.session?.jwt) {
+        axiosAuthInstance.defaults.headers['Authorization'] = `Bearer ${req.session?.jwt}`;
+      }
+      next();
+    });
   }
 
   private standardMiddleware(app: Application): void {
     app.use(compression());
-    app.use(json({ limit: '200nb' }));
-    app.use(urlencoded({ extended: true, limit: '200nb' }));
+    app.use(json({ limit: '200mb' }));
+    app.use(urlencoded({ extended: true, limit: '200mb' }));
   }
 
   private routesMiddleware(app: Application): void {

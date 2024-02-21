@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-
+import cloudinary from 'cloudinary';
 dotenv.config({});
 
 class Config {
@@ -29,7 +29,13 @@ class Config {
     this.ELASTIC_SEARCH_URL = process.env.ELASTIC_SEARCH_URL || '';
   }
 
-
+  public cloudinaryConfig() {
+    cloudinary.v2.config({
+      cloud_name: this.CLOUD_NAME,
+      api_key: this.CLOUD_API_KEY,
+      api_secret: this.CLOUD_API_SECRET
+    });
+  }
 }
 
 export const config: Config = new Config();

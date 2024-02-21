@@ -55,8 +55,8 @@ function securityMiddleware(app: Application): void {
 
 function standardMiddleware(app: Application): void {
   app.use(compression());
-  app.use(json({ limit: '200nb' }));
-  app.use(urlencoded({ extended: true, limit: '200nb' }));
+  app.use(json({ limit: '200mb' }));
+  app.use(urlencoded({ extended: true, limit: '200mb' }));
 }
 
 function routesMiddleware(app: Application): void {

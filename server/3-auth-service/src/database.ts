@@ -16,9 +16,9 @@ export const sequelize = new Sequelize(process.env.MYSQL_DB!, {
 export async function databaseConnection(): Promise<void> {
   try {
     await sequelize.authenticate();
-    log.info('AuthService MySql database connection has been established succefully');
+    log.info('AuthService Mysql database connection has been established successfully.');
   } catch (error) {
-    log.error('auth server - unable to connect database');
-    log.log('error', 'Auth service databaseConnection method error', error);
+    log.error('Auth Service - Unable to connect to database.');
+    log.log('error', 'AuthService databaseConnection() method error:', error);
   }
 }

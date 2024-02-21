@@ -48,7 +48,8 @@ export async function getAuthUserByUsernameOrEmail(username: string, email: stri
       [Op.or]: [{ username: firstLetterUppercase(username) }, { email: lowerCase(email) }]
     }
   })) as Model;
-  return user.dataValues;
+
+  return user?.dataValues;
 }
 
 export async function getAuthUserByUsername(username: string): Promise<IAuthDocument> {
