@@ -1,26 +1,28 @@
 @baseUrl = http://localhost:4000
 @urlPath = api/gateway/v1/auth
 
+###
 POST {{baseUrl}}/{{urlPath}}/signup
 Content-Type: application/json
 Accept: application/json
 withCredentials : true
 
 {
-    "username" : "test" , 
-    "email" : "test@gmail.com" , 
+    "username" : "khosro" , 
+    "email" : "khosrora153333@gmail.com" , 
     "password" : "kh153333" , 
     "country" : "iran" , 
-    "profilePicture" : ""  
+    "profilePicture" : "" 
 }
 
-
-POST {{baseUrl}}/{{urlPath}}/signin
+###
+GET {{baseUrl}}/{{urlPath}}/search/gig/0/5/forward?query=beauty&delivery_times=3
 Content-Type: application/json
 Accept: application/json
 withCredentials : true
 
-{
-    "username" : "test" , 
-    "password" : "kh153333"
-}
+###
+GET {{baseUrl}}/{{urlPath}}/logout
+Content-Type: application/json
+Accept: application/json
+withCredentials : true

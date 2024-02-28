@@ -3,7 +3,7 @@ import { ElasticsearchTransformer, ElasticsearchTransport, LogData, TransformedD
 
 const esTransformer = (logData: LogData): TransformedData => {
   return ElasticsearchTransformer(logData);
-};
+}
 
 export const winstonLogger = (elasticsearchNode: string, name: string, level: string): Logger => {
   const options = {
@@ -32,4 +32,4 @@ export const winstonLogger = (elasticsearchNode: string, name: string, level: st
     transports: [new winston.transports.Console(options.console), esTransport]
   });
   return logger;
-};
+}

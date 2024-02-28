@@ -7,7 +7,7 @@ import { v4 as uuidV4 } from 'uuid';
 import { UploadApiResponse } from 'cloudinary';
 import { uploads } from '@auth/utils/cloudinary-upload';
 import crypto from 'crypto';
-import { firstLetterUppercase, lowerCase } from '@auth/utils/helper';
+import { firstLetterUppercase, lowerCase } from '@auth/utils/helpers';
 import { config } from '@auth/config';
 import { publishDirectMessage } from '@auth/queues/auth.producer';
 import { authChannel } from '@auth/server';

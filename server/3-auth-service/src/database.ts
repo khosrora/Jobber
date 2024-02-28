@@ -1,6 +1,6 @@
 import { Logger } from 'winston';
 import { config } from '@auth/config';
-import { winstonLogger } from './utils/Logger';
+import { winstonLogger } from './utils/logger';
 import { Sequelize } from 'sequelize';
 
 const log: Logger = winstonLogger(`${config.ELASTIC_SEARCH_URL}`, 'auth data base server', 'debug');

@@ -5,7 +5,7 @@ import { publishDirectMessage } from '@auth/queues/auth.producer';
 
 import { authChannel } from '@auth/server';
 import { omit } from 'lodash';
-import { firstLetterUppercase, lowerCase } from '@auth/utils/helper';
+import { firstLetterUppercase, lowerCase } from '@auth/utils/helpers';
 import { sign } from 'jsonwebtoken';
 import { config } from '@auth/config';
 

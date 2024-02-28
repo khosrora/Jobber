@@ -1,5 +1,5 @@
 import { Logger } from 'winston';
-import { winstonLogger } from '@auth/utils/Logger';
+import { winstonLogger } from '@auth/utils/logger';
 import { config } from './config';
 import { Application, json, NextFunction, Request, Response, urlencoded } from 'express';
 import hpp from 'hpp';
@@ -8,7 +8,7 @@ import cors from 'cors';
 import { verify } from 'jsonwebtoken';
 import { IAuthPayload } from './utils/auth.interface';
 import compression from 'compression';
-import { checkConnection } from '@auth/elasticsearch';
+import { checkConnection, createsIndex } from '@auth/elasticsearch';
 import { IErrorResponse, CustomError } from './utils/error-handler';
 import http from 'http';
 import { appRoutes } from '@auth/routes';
@@ -69,6 +69,7 @@ async function startQueues(): Promise<void> {
 
 function startElasticSearch(): void {
   checkConnection();
+  createsIndex('gigs');
 }
 
 function authErrorHandler(app: Application): void {

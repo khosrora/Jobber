@@ -11,4 +11,9 @@ export class Signup {
     };
     res.status(StatusCodes.CREATED).json({ message: response.data.message, user: response.data.user });
   }
+
+  public async logout(req: Request, res: Response): Promise<void> {
+    await authService.logout();
+    res.status(StatusCodes.CREATED).json({ message: 'OK !!! logouted !' });
+  }
 }

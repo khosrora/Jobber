@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { BadRequestError } from '@auth/utils/error-handler';
 import { loginSchema } from '@auth/schemes/signin';
-import { isEmail } from '@auth/utils/helper';
+import { isEmail } from '@auth/utils/helpers';
 import { IAuthDocument } from '@auth/utils/auth.interface';
 import { getAuthUserByUsername, getAuthUserByEmail, signToken } from '@auth/services/auth.service';
 import { AuthModel } from '@auth/models/auth.schema';

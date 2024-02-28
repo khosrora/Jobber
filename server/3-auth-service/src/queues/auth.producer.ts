@@ -1,5 +1,5 @@
 import { config } from '@auth/config';
-import { winstonLogger } from '@auth/utils/Logger';
+import { winstonLogger } from '@auth/utils/logger';
 import { Channel } from 'amqplib';
 import { Logger } from 'winston';
 import { createConnection } from '@auth/queues/connection';

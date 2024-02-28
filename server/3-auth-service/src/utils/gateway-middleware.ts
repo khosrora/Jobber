@@ -14,11 +14,13 @@ export function verifyGatewayRequest(req: Request, _res: Response, next: NextFun
   }
 
   try {
-    const payload: { id: string; iat: number } = JWT.verify(token, '0fac5af0d6957cda0d18d3f990689afe') as { id: string; iat: number };
+    const payload: { id: string; iat: number } = JWT.verify(token, 'cd2ba99cc0bbae2ee84c5267f161c40f') as { id: string; iat: number };
+
     if (!tokens.includes(payload.id)) {
       throw new NotAuthorizedError('Invalid request', 'verifyGatewayRequest() method: Request payload is invalid');
     }
   } catch (error) {
+    console.log(error);
     throw new NotAuthorizedError('Invalid request', 'verifyGatewayRequest() method: Request not coming from api gateway');
   }
   next();
