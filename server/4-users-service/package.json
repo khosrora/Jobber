@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@elastic/elasticsearch": "^8.10.0",
-    "@faker-js/faker": "^8.2.0",
+    "@faker-js/faker": "^8.4.1",
     "amqplib": "^0.10.3",
     "cloudinary": "^1.41.0",
     "compression": "^1.7.4",

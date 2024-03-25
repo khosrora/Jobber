@@ -1,15 +1,15 @@
 import { ISellerDocument } from '@users/utils';
-import { Schema, Model, model } from 'mongoose';
+import { Model, Schema, model } from 'mongoose';
 
 const sellerSchema: Schema = new Schema(
   {
-    fullname: { type: String, required: true },
+    fullName: { type: String, required: true },
     username: { type: String, required: true, index: true },
     email: { type: String, required: true, index: true },
     profilePicture: { type: String, required: false },
     description: { type: String, required: true },
     profilePublicId: { type: String, required: true },
-    oneline: { type: String, default: '' },
+    oneliner: { type: String, default: '' },
     country: { type: String, required: true },
     languages: [
       {
@@ -19,6 +19,7 @@ const sellerSchema: Schema = new Schema(
     ],
     skills: [{ type: String, required: true }],
     ratingsCount: { type: Number, default: 0 },
+    ratingSum: { type: Number, default: 0 },
     ratingCategories: {
       five: { value: { type: Number, default: 0 }, count: { type: Number, default: 0 } },
       four: { value: { type: Number, default: 0 }, count: { type: Number, default: 0 } },
@@ -27,7 +28,7 @@ const sellerSchema: Schema = new Schema(
       one: { value: { type: Number, default: 0 }, count: { type: Number, default: 0 } }
     },
     responseTime: { type: Number, default: 0 },
-    resendDelivery: { type: Date, default: '' },
+    recentDelivery: { type: Date, default: '' },
     experience: [
       {
         company: { type: String, default: '' },
@@ -52,7 +53,7 @@ const sellerSchema: Schema = new Schema(
       {
         name: { type: String },
         from: { type: String },
-        year: { type: String }
+        year: { type: Number }
       }
     ],
     ongoingJobs: { type: Number, default: 0 },
@@ -60,13 +61,12 @@ const sellerSchema: Schema = new Schema(
     cancelledJobs: { type: Number, default: 0 },
     totalEarnings: { type: Number, default: 0 },
     totalGigs: { type: Number, default: 0 },
-    createdAt: { type: Date, default: Date.now() }
+    createdAt: { type: Date, default: Date.now }
   },
   {
     versionKey: false
   }
 );
 
-const SellerModel: Model<ISellerDocument> = model<ISellerDocument>('Buyer', sellerSchema);
-
+const SellerModel: Model<ISellerDocument> = model<ISellerDocument>('Seller', sellerSchema, 'Seller');
 export { SellerModel };

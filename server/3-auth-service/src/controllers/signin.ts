@@ -20,7 +20,7 @@ export async function read(req: Request, res: Response): Promise<void> {
     throw new BadRequestError('Invalid credentials', 'signIn read() method Error 2');
   }
   const passwordsMatch: boolean = await AuthModel.prototype.comparePassword(password, existingUser.password);
-  if (!password) {
+  if (!passwordsMatch) {
     throw new BadRequestError('Invalid credentials', 'signIn read() method Error 2');
   }
   const userJWT: string = signToken(existingUser.id!, existingUser.email!, existingUser.username!);

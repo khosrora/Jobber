@@ -1,6 +1,6 @@
 import { Logger } from 'winston';
 import { winstonLogger } from '@users/utils/logger';
-import { config } from './config';
+import { config } from '@users/config';
 import { Application, json, NextFunction, Request, Response, urlencoded } from 'express';
 import hpp from 'hpp';
 import helmet from 'helmet';
@@ -12,8 +12,14 @@ import { checkConnection } from '@users/elasticsearch';
 import { IErrorResponse, CustomError } from './utils/error-handler';
 import http from 'http';
 import { appRoutes } from '@users/routes';
-// import { createConnection } from '@users/queues/connection';
-// import { Channel } from 'amqplib';
+import { createConnection } from '@users/queues/connection';
+import { Channel } from 'amqplib';
+import {
+  consumeBuyerDirectMessage,
+  consumeReviewFanoutMessages,
+  consumeSeedGigDirectMessages,
+  consumeSellerDirectMessage
+} from '@users/queues/user.consumer';
 
 const SERVER_PORT = 4003;
 const log: Logger = winstonLogger(`${config.ELASTIC_SEARCH_URL}`, 'users server', 'debug');
@@ -61,7 +67,13 @@ function routesMiddleware(app: Application): void {
   appRoutes(app);
 }
 
-async function startQueues(): Promise<void> {}
+async function startQueues(): Promise<void> {
+  const userChannel: Channel = (await createConnection()) as Channel;
+  await consumeBuyerDirectMessage(userChannel);
+  await consumeSellerDirectMessage(userChannel);
+  await consumeReviewFanoutMessages(userChannel);
+  await consumeSeedGigDirectMessages(userChannel);
+}
 
 function startElasticSearch(): void {
   checkConnection();
@@ -82,7 +94,7 @@ function startServer(app: Application): void {
     const httpServer: http.Server = new http.Server(app);
     log.info(`user server has started pId : ${process.pid}`);
     httpServer.listen(SERVER_PORT, () => {
-      log.info(`Authentication server running on ports ${SERVER_PORT}`);
+      log.info(`users server running on ports ${SERVER_PORT}`);
     });
   } catch (error) {
     log.log('error', 'user service startServer() method Error', error);

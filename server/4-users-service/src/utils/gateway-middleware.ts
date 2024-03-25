@@ -6,22 +6,20 @@ const tokens: string[] = ['auth', 'seller', 'gig', 'search', 'buyer', 'message',
 
 export function verifyGatewayRequest(req: Request, _res: Response, next: NextFunction): void {
   if (!req.headers?.gatewaytoken) {
-    throw new NotAuthorizedError('Invalid request', 'verifyGatewayRequest() method: Request not coming from api gateway');
+    throw new NotAuthorizedError('Invalid request', 'verifyGatewayRequest() method: Request not coming from api gateway 1');
   }
   const token: string = req.headers?.gatewaytoken as string;
   if (!token) {
-    throw new NotAuthorizedError('Invalid request', 'verifyGatewayRequest() method: Request not coming from api gateway');
+    throw new NotAuthorizedError('Invalid request', 'verifyGatewayRequest() method: Request not coming from api gateway 2');
   }
-
   try {
-    const payload: { id: string; iat: number } = JWT.verify(token, 'cd2ba99cc0bbae2ee84c5267f161c40f') as { id: string; iat: number };
-
+    const payload: { id: string; iat: number } = JWT.verify(token, '0fac5af0d6957cda0d18d3f990689afe') as { id: string; iat: number };
     if (!tokens.includes(payload.id)) {
-      throw new NotAuthorizedError('Invalid request', 'verifyGatewayRequest() method: Request payload is invalid');
+      throw new NotAuthorizedError('Invalid request', 'verifyGatewayRequest() method: invalid signature');
     }
   } catch (error) {
-    console.log(error);
-    throw new NotAuthorizedError('Invalid request', 'verifyGatewayRequest() method: Request not coming from api gateway');
+    console.error(error);
+    throw new NotAuthorizedError('Invalid request', 'verifyGatewayRequest() method: Request not coming from api gateway 4');
   }
   next();
 }

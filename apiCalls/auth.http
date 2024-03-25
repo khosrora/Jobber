@@ -8,11 +8,22 @@ Accept: application/json
 withCredentials : true
 
 {
-    "username" : "khosro" , 
-    "email" : "khosrora153333@gmail.com" , 
+    "username" : "khosrora" , 
+    "email" : "khosrora1153333@gmail.com" , 
     "password" : "kh153333" , 
     "country" : "iran" , 
     "profilePicture" : "" 
+}
+
+###
+POST {{baseUrl}}/{{urlPath}}/signin
+Content-Type: application/json
+Accept: application/json
+withCredentials : true
+
+{
+    "username" : "khosrora" , 
+    "password" : "kh153333"  
 }
 
 ###
